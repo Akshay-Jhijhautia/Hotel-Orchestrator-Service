@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import { rateLimiter } from './middlewares/rateLimiter';
 import { notFoundHandler } from './middlewares/notFoundHandler';
 import { errorHandler } from './middlewares/errorHandler';
+import supplierRoutes from './routes/supplier.routes';
 
 const app = express();
 
@@ -13,7 +14,8 @@ app.use(cors());
 app.use(express.json());
 app.use(rateLimiter);
 
-// --------------- Routes (to be registered in later features) ---------------
+// --------------- Routes ---------------
+app.use(supplierRoutes);
 
 // --------------- Error Handling ---------------
 app.use(notFoundHandler);

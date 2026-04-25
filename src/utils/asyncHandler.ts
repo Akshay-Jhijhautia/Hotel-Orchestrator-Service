@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 
-type AsyncRouteHandler = (req: Request, res: Response, next: NextFunction) => Promise<void>;
+type RouteHandler = (req: Request, res: Response, next: NextFunction) => void | Promise<void>;
 
-export function asyncHandler(fn: AsyncRouteHandler): AsyncRouteHandler {
+export function asyncHandler(fn: RouteHandler): RouteHandler {
   return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       await fn(req, res, next);
