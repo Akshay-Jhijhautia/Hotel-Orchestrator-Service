@@ -5,6 +5,7 @@ import { rateLimiter } from './middlewares/rateLimiter';
 import { notFoundHandler } from './middlewares/notFoundHandler';
 import { errorHandler } from './middlewares/errorHandler';
 import supplierRoutes from './routes/supplier.routes';
+import hotelRoutes from './routes/hotel.routes';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(rateLimiter);
 
 // --------------- Routes ---------------
 app.use(supplierRoutes);
+app.use(hotelRoutes);
 
 // --------------- Error Handling ---------------
 app.use(notFoundHandler);

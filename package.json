@@ -13,7 +13,13 @@
     "lint:fix": "eslint src/**/*.ts --fix",
     "format": "prettier --write \"src/**/*.ts\""
   },
-  "keywords": ["hotel", "orchestrator", "temporal", "redis", "express"],
+  "keywords": [
+    "hotel",
+    "orchestrator",
+    "temporal",
+    "redis",
+    "express"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -27,12 +33,14 @@
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.0.0",
     "ioredis": "^5.4.2",
+    "uuid": "^14.0.0",
     "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.13.0",
+    "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.23.0",
     "@typescript-eslint/parser": "^8.23.0",
     "eslint": "^8.57.1",
