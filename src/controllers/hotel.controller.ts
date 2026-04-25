@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { sendSuccess } from '../utils/apiResponse';
 import { AppError } from '../utils/AppError';
 import { HotelQuery } from '../types/hotel.types';
-import { startHotelOfferWorkflow } from '../services/hotelWorkflow.service';
+import { startHotelOfferWorkflow, getFilteredHotels } from '../services/hotelWorkflow.service';
 
 function parseHotelQuery(req: Request): HotelQuery {
   const city = req.query.city as string | undefined;
@@ -39,8 +39,17 @@ function parseHotelQuery(req: Request): HotelQuery {
 }
 
 export async function getHotels(req: Request, res: Response): Promise<void> {
-  const query = parseHotelQuery(req);
+  const { city, minPrice, maxPrice } = parseHotelQuery(req);
 
-  const hotels = await startHotelOfferWorkflow(query.city);
+  if (minPrice !== undefined || maxPrice !== undefined) {
+    const min = minPrice ?? 0;
+    const max = maxPrice ?? Number.MAX_SAFE_INTEGER;
+    const hotels = await getFilteredHotels(city, min, max);
+    sendSuccess(res, hotels);
+    return;
+  }
+
+  const hotels = await startHotelOfferWorkflow(city);
   sendSuccess(res, hotels);
 }
+

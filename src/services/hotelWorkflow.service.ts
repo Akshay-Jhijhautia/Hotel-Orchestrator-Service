@@ -3,6 +3,7 @@ import { config } from '../config/env';
 import { HotelOffer } from '../types/hotel.types';
 import { logger } from '../utils/logger';
 import { v4 as uuidv4 } from 'uuid';
+import { cityDataExists, getHotelsByPriceRange } from './redisHotelReader.service';
 
 export async function startHotelOfferWorkflow(city: string): Promise<HotelOffer[]> {
   const client = await getTemporalClient();
@@ -20,4 +21,19 @@ export async function startHotelOfferWorkflow(city: string): Promise<HotelOffer[
   logger.info(`Workflow completed for city="${city}" — ${result.length} hotels`);
 
   return result;
+}
+
+export async function getFilteredHotels(
+  city: string,
+  minPrice: number,
+  maxPrice: number,
+): Promise<HotelOffer[]> {
+  const hasData = await cityDataExists(city);
+
+  if (!hasData) {
+    logger.info(`No Redis data for "${city}" — running workflow to populate`);
+    await startHotelOfferWorkflow(city);
+  }
+
+  return getHotelsByPriceRange(city, minPrice, maxPrice);
 }
