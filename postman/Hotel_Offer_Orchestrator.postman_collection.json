@@ -170,6 +170,27 @@
           }
         }
       ]
+    },
+    {
+      "name": "Simulate Supplier Down",
+      "item": [
+        {
+          "name": "Hotels - Supplier A Down (Graceful Degradation)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/hotels?city=delhi",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "hotels"],
+              "query": [
+                { "key": "city", "value": "delhi" }
+              ]
+            },
+            "description": "Tests graceful degradation when Supplier A is down.\n\nHow to simulate:\n1. Stop the running services: docker compose down\n2. Change SUPPLIER_A_URL in docker-compose.yml to: http://bad-host:9999/supplierA/hotels\n3. Restart: docker compose up --build\n4. Run this request.\n\nExpected result:\n- Returns Supplier B hotels ONLY (Holtin ₹5340, Radison ₹6200, The Grand ₹7200).\n- Supplier A's hotels are missing because the activity failed after 3 retries.\n- The workflow does NOT fail — it degrades gracefully using Promise.allSettled.\n\nAfter testing, revert SUPPLIER_A_URL back to: http://app:3000/supplierA/hotels"
+          }
+        }
+      ]
     }
   ]
 }

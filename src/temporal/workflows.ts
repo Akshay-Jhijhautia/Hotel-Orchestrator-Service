@@ -1,6 +1,6 @@
-import { proxyActivities } from '@temporalio/workflow';
+import { proxyActivities, log } from '@temporalio/workflow';
 import type * as activities from './activities';
-import type { HotelOffer } from '../types/hotel.types';
+import type { SupplierHotel, HotelOffer } from '../types/hotel.types';
 
 const {
   fetchSupplierAHotels,
@@ -15,11 +15,23 @@ const {
 });
 
 export async function hotelOfferWorkflow(city: string): Promise<HotelOffer[]> {
-  // Step 1: Fetch from both suppliers in parallel
-  const [supplierAHotels, supplierBHotels] = await Promise.all([
+  // Step 1: Fetch from both suppliers in parallel (graceful degradation)
+  const [resultA, resultB] = await Promise.allSettled([
     fetchSupplierAHotels(city),
     fetchSupplierBHotels(city),
   ]);
+
+  const supplierAHotels: SupplierHotel[] =
+    resultA.status === 'fulfilled' ? resultA.value : [];
+  const supplierBHotels: SupplierHotel[] =
+    resultB.status === 'fulfilled' ? resultB.value : [];
+
+  if (resultA.status === 'rejected') {
+    log.warn(`Supplier A failed: ${resultA.reason}. Continuing with Supplier B only.`);
+  }
+  if (resultB.status === 'rejected') {
+    log.warn(`Supplier B failed: ${resultB.reason}. Continuing with Supplier A only.`);
+  }
 
   // Step 2: Deduplicate and select the cheapest offers
   const bestOffers = await dedupeAndSelectBestOffers(supplierAHotels, supplierBHotels);
