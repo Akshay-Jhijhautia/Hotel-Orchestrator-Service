@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { sendSuccess } from '../utils/apiResponse';
+import { sendSuccess, sendError } from '../utils/apiResponse';
 import { AppError } from '../utils/AppError';
 import { HotelQuery } from '../types/hotel.types';
 import { startHotelOfferWorkflow, getFilteredHotels } from '../services/hotelWorkflow.service';
@@ -41,15 +41,21 @@ function parseHotelQuery(req: Request): HotelQuery {
 export async function getHotels(req: Request, res: Response): Promise<void> {
   const { city, minPrice, maxPrice } = parseHotelQuery(req);
 
+  let hotels;
+
   if (minPrice !== undefined || maxPrice !== undefined) {
     const min = minPrice ?? 0;
     const max = maxPrice ?? Number.MAX_SAFE_INTEGER;
-    const hotels = await getFilteredHotels(city, min, max);
-    sendSuccess(res, hotels);
+    hotels = await getFilteredHotels(city, min, max);
+  } else {
+    hotels = await startHotelOfferWorkflow(city);
+  }
+
+  if (hotels.length === 0) {
+    sendError(res, 'Hotels for requested city are not present. Please try again later', 404);
     return;
   }
 
-  const hotels = await startHotelOfferWorkflow(city);
   sendSuccess(res, hotels);
 }
 

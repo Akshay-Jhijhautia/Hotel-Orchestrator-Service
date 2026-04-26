@@ -133,7 +133,7 @@ This starts 6 containers:
 | `worker` | — | Temporal worker (no external port) |
 | `redis` | 6379 | Redis cache |
 | `temporal` | 7233 | Temporal server |
-| `temporal-postgres` | 5432 | PostgreSQL for Temporal |
+| `temporal-postgres` | — | PostgreSQL for Temporal (internal only) |
 | `temporal-ui` | 8080 | Temporal web dashboard |
 
 ### Stop services
@@ -297,6 +297,7 @@ All errors follow a consistent format:
 | Invalid minPrice | 400 | `minPrice must be a valid non-negative number` |
 | Invalid maxPrice | 400 | `maxPrice must be a valid non-negative number` |
 | minPrice > maxPrice | 400 | `minPrice cannot be greater than maxPrice` |
+| No hotels for city | 404 | `Hotels for requested city are not present. Please try again later` |
 | Unknown route | 404 | `Route not found` |
 | Server error | 500 | `Internal Server Error` |
 
@@ -320,7 +321,7 @@ Import the collection into Postman:
 | 3 | Supplier B — Delhi | 200 — 3 hotels |
 | 4 | Hotels — Valid City | 200 — 4 deduplicated hotels |
 | 5 | Hotels — Price Filter | 200 — filtered by range |
-| 6 | Hotels — Mumbai | 200 — Mumbai hotels |
+| 6 | Hotels — No Results (Chennai) | 404 — city not present |
 | 7 | Hotels — Missing City | 400 — validation error |
 | 8 | Hotels — Invalid Price | 400 — validation error |
 | 9 | Hotels — Invalid Range | 400 — validation error |

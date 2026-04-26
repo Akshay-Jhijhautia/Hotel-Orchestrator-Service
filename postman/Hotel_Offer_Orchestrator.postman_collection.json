@@ -110,14 +110,14 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/api/hotels?city=mumbai",
+              "raw": "{{baseUrl}}/api/hotels?city=chennai",
               "host": ["{{baseUrl}}"],
               "path": ["api", "hotels"],
               "query": [
-                { "key": "city", "value": "mumbai" }
+                { "key": "city", "value": "chennai" }
               ]
             },
-            "description": "Tests with a city that has hotel data from both suppliers (Mumbai)."
+            "description": "Should return 404: Hotels for requested city are not present. Please try again later."
           }
         },
         {
