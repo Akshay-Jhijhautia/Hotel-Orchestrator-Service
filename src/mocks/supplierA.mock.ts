@@ -1,6 +1,7 @@
 import { SupplierHotel } from '../types/hotel.types';
 
 export const supplierAHotels: SupplierHotel[] = [
+  // ---- Delhi ----
   {
     hotelId: 'a1',
     name: 'Holtin',
@@ -22,6 +23,8 @@ export const supplierAHotels: SupplierHotel[] = [
     city: 'delhi',
     commissionPct: 15,
   },
+
+  // ---- Mumbai ----
   {
     hotelId: 'a4',
     name: 'The Oberoi',
@@ -35,5 +38,51 @@ export const supplierAHotels: SupplierHotel[] = [
     price: 4500,
     city: 'mumbai',
     commissionPct: 8,
+  },
+  {
+    hotelId: 'a6',
+    name: 'Taj Lands End',
+    price: 8500,
+    city: 'mumbai',
+    commissionPct: 14,
+  },
+
+  // ---- Bangalore ----
+  {
+    hotelId: 'a7',
+    name: 'Royal Orchid',
+    price: 5500,
+    city: 'bangalore',
+    commissionPct: 11,
+  },
+  {
+    hotelId: 'a8',
+    name: 'ITC Gardenia',
+    price: 11000,
+    city: 'bangalore',
+    commissionPct: 16,
+  },
+  {
+    hotelId: 'a9',
+    name: 'Leela Palace',
+    price: 14000,
+    city: 'bangalore',
+    commissionPct: 18,
+  },
+
+  // ---- Gurgaon (Supplier A only) ----
+  {
+    hotelId: 'a10',
+    name: 'Trident',
+    price: 7800,
+    city: 'gurgaon',
+    commissionPct: 10,
+  },
+  {
+    hotelId: 'a11',
+    name: 'Hyatt Regency',
+    price: 9500,
+    city: 'gurgaon',
+    commissionPct: 13,
   },
 ];
